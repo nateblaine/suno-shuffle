@@ -67,7 +67,7 @@
       shuffleButton.classList.add('suno-shuffle-button');
       
       // Insert the button before the last element in the container
-      targetContainer.insertBefore(shuffleButton, targetContainer.lastElementChild);
+      targetContainer.insertBefore(shuffleButton, targetContainer.firstChild);
       console.log('✅ Suno Shuffler: Shuffle button injected');
     }
   
