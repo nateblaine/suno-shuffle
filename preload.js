@@ -5,5 +5,5 @@
     s.src = chrome.runtime.getURL('override.js');
     s.onload = () => s.remove();
     (document.head || document.documentElement).appendChild(s);
-  })();
+})();
   
