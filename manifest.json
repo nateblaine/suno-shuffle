@@ -2,7 +2,7 @@
     "manifest_version": 3,
     "name": "Suno Shuffle",
     "version": "1.0",
-    "description": "Chrome extension to add shuffle functionality onto the Suno.ai playlists page",
+    "description": "Chrome extension to add shuffle functionality onto the suno.com playlists page",
     "permissions": [
       "scripting"
     ],
@@ -12,7 +12,7 @@
     ],
     "web_accessible_resources": [
       {
-        "resources": ["override.js"],
+        "resources": ["override.js", "icons/shuffleIcon40.png"],
         "matches": ["<all_urls>"]
       }
     ],
@@ -24,7 +24,7 @@
       }
     ],
     "action": {
-      "default_title": "Shuffle & Reload Playlist",
+      "default_title": "Suno Shuffle",
       "default_icon": {
         "16": "icons/icon16.png",
         "48": "icons/icon48.png",

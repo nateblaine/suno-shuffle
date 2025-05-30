@@ -17,12 +17,27 @@
 
     function createShuffleButton() {
       const button = document.createElement('button');
-      button.className = 'relative inline-flex items-center justify-center font-sans font-medium text-center before:absolute before:inset-0 before:pointer-events-none before:rounded-[inherit] before:border before:border-transparent before:bg-transparent after:absolute after:inset-0 after:pointer-events-none after:rounded-[inherit] after:bg-transparent after:opacity-0 enabled:hover:after:opacity-100 transition duration-75 before:transition before:duration-75 after:transition after:duration-75 select-none cursor-pointer text-[14px] leading-[20px] rounded-md text-background-primary bg-foreground-primary enabled:before:hover:bg-overlay-onLight disabled:brightness-50';
-      button.title = 'Shuffle Playlist';
-      button.style.marginLeft = '8px';
-      button.style.width = '36px';
-      button.style.height = '40px';
-      button.textContent = 'S';
+      button.textContent = '§';
+      button.title = 'Shuffle Suno';
+
+      button.style.cssText = `
+        margin-left: 8px;
+        width: 40px;
+        height: 40px;
+        border: none;
+        border-radius: 12px;
+        background: linear-gradient(135deg, #FFB74D 0%, #FF3D00 100%);
+        color: white;
+        font-size: 20px;
+        font-weight: bold;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+        cursor: pointer;
+        user-select: none;
+      `;
+
       
       button.addEventListener('click', async () => {
         if (playlistData && Array.isArray(playlistData.playlist_clips)) {
@@ -37,7 +52,7 @@
           
           // Visual feedback before refresh
           button.textContent = '✓';
-          button.style.color = '#4ade80';
+          button.style.color = '#ffffff';
           
           // Refresh the page after a short delay to show the checkmark
           setTimeout(() => {
