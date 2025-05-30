@@ -5,13 +5,14 @@
     console.log('🔀 Suno Shuffler: override.js loaded');
   
     const originalFetch = window.fetch;
-    let isShuffled = false;
+    let playlistData = null;
 
     function shuffleArray(arr) {
       for (let i = arr.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
         [arr[i], arr[j]] = [arr[j], arr[i]];
       }
+      return arr;
     }
 
     function createShuffleButton() {
@@ -23,8 +24,26 @@
       button.style.height = '40px';
       button.textContent = 'S';
       
-      button.addEventListener('click', () => {
-        window.location.reload();
+      button.addEventListener('click', async () => {
+        if (playlistData && Array.isArray(playlistData.playlist_clips)) {
+          // Create a new shuffled copy of the data
+          const shuffledData = {
+            ...playlistData,
+            playlist_clips: shuffleArray([...playlistData.playlist_clips])
+          };
+          
+          // Store the shuffled data in session storage
+          sessionStorage.setItem('sunoShuffledData', JSON.stringify(shuffledData));
+          
+          // Visual feedback before refresh
+          button.textContent = '✓';
+          button.style.color = '#4ade80';
+          
+          // Refresh the page after a short delay to show the checkmark
+          setTimeout(() => {
+            window.location.reload();
+          }, 300);
+        }
       });
       
       return button;
@@ -57,6 +76,29 @@
   
       // Only target the Studio API playlist endpoint
       if (url.includes('/api/playlist/') && url.includes('?page=')) {
+        // Check for shuffled data in session storage first
+        const shuffledDataJson = sessionStorage.getItem('sunoShuffledData');
+        if (shuffledDataJson) {
+          try {
+            const shuffledData = JSON.parse(shuffledDataJson);
+            // Clear the stored data after using it
+            sessionStorage.removeItem('sunoShuffledData');
+            
+            // Return the shuffled data without making a new request
+            const blob = new Blob([shuffledDataJson], { type: 'application/json' });
+            return new Response(blob, {
+              status: 200,
+              statusText: 'OK',
+              headers: new Headers({
+                'Content-Type': 'application/json'
+              })
+            });
+          } catch (e) {
+            console.error('Error parsing shuffled data:', e);
+          }
+        }
+        
+        // No shuffled data, proceed with normal fetch
         const response = await originalFetch(input, init);
   
         let data;
@@ -67,22 +109,17 @@
         }
   
         if (Array.isArray(data.playlist_clips)) {
-          if (!isShuffled) {
-            shuffleArray(data.playlist_clips);
-            isShuffled = true;
-            console.log('🔀 Suno Shuffler: playlist_clips array shuffled');
-            
-            // Inject the shuffle button after the first successful shuffle
+          // Store the original data
+          playlistData = data;
+          console.log('🔍 Suno Shuffler: Playlist data loaded');
+          
+          // Inject the shuffle button after the first successful load
+          if (!document.querySelector('.suno-shuffle-button')) {
             setTimeout(injectShuffleButton, 500);
           }
         }
-  
-        const blob = new Blob([JSON.stringify(data)], { type: 'application/json' });
-        return new Response(blob, {
-          status:       response.status,
-          statusText:   response.statusText,
-          headers:      response.headers
-        });
+        
+        return response;
       }
   
       // Fallback: normal fetch
