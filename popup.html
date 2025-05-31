@@ -1,54 +1,122 @@
-<!-- popup.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1"
-  />
-  <title>Suno Shuffle Options</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Suno Shuffle</title>
   <style>
-    body {
-      width: 240px;
-      font-family: sans-serif;
-      margin: 0;
-      padding: 12px 16px;
-      background-color: #f9f9f9;
-      color: #333;
+    :root {
+      --bg-color: #1e1e2e;
+      --card-bg: #2a2a3a;
+      --text-color: #e2e2e2;
+      --accent-color: #ff7a5f;
+      --border-radius: 12px;
+      --spacing: 16px;
     }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+    }
+    
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      width: 300px;
+      min-height: 200px;
+      padding: var(--spacing);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+    }
+    
+    .logo {
+      width: 80px;
+      height: 80px;
+      margin-bottom: var(--spacing);
+      border-radius: 50%;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0);
+    }
+    
+    .header {
+      text-align: center;
+      margin-bottom: var(--spacing);
+    }
+    
     h1 {
-      font-size: 18px;
+      font-size: 22px;
+      font-weight: 700;
+      color: white;
+      margin-bottom: 8px;
+      background: linear-gradient(135deg, #ff9a5f, #ff5f8a);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    
+    .content {
+      text-align: center;
+      margin: var(--spacing) 0;
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      width: 100%;
+    }
+    
+    .footer {
+      width: 100%;
+      text-align: center;
+      padding-top: var(--spacing);
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      margin-top: auto;
+    }
+    
+    .love-note {
+      font-size: 14px;
+      color: rgba(255, 255, 255, 0.6);
       margin-bottom: 12px;
     }
-    .option {
-      margin-bottom: 8px;
-    }
-    label {
-      cursor: pointer;
-    }
-    footer {
-      margin-top: 16px;
-      text-align: center;
-      font-size: 12px;
-      color: #555;
-    }
-    footer a {
-      color: #0366d6;
+    
+    .github-link {
+      display: inline-block;
+      color: var(--accent-color);
       text-decoration: none;
+      font-size: 13px;
+      transition: opacity 0.2s;
     }
-    footer a:hover {
+    
+    .github-link:hover {
+      opacity: 0.8;
       text-decoration: underline;
+    }
+    
+    .heart {
+      color: #ff5f8a;
+      display: inline-block;
+      margin: 0 2px;
     }
   </style>
 </head>
 <body>
-  <h1>Suno Shuffle</h1>
-
-  <footer>
-    <a href="https://github.com/nateblaine/suno-shuffle" target="_blank">
+  <img src="icons/icon128.png" alt="Suno Shuffle" class="logo">
+  
+  <div class="header">
+    <h1>Suno Shuffle</h1>
+  </div>
+  
+  <div class="content">
+    <p>Click the shuffle button on any Suno playlist page to refresh the page and randomize track order.</p>
+  </div>
+  
+  <div class="footer">
+    <p class="love-note">Made with <span class="heart">❤️</span> from Richmond, VA</p>
+    <a href="https://github.com/nateblaine/suno-shuffle" target="_blank" class="github-link">
       View on GitHub
     </a>
-  </footer>
+  </div>
 </body>
 </html>

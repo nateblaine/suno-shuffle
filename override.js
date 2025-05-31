@@ -44,58 +44,73 @@
     return arr;
   }
 
-  function createShuffleButton() {
-    const button = document.createElement('button');
-    button.textContent = '§';
-    button.title = 'Shuffle Suno';
+  // At the top of override.js (anywhere before createShuffleButton):
+  const scriptSrc = document.currentScript.src;
+  // This will yield something like "chrome-extension://<EXT_ID>/override.js"
+  const iconUrl = new URL('icons/icon128.png', scriptSrc).href;
 
+  function createShuffleButton() {
+    // Create a <button> container
+    const button = document.createElement('button');
+    button.title = 'Shuffle Playlist';
+    button.classList.add('suno-shuffle-button'); // optional: reuse the class if needed
+  
+    // Style the button to be 48×48px, round‐cornered, no default text
     button.style.cssText = `
       margin-left: 8px;
-      width: 40px;
-      height: 40px;
+      width: 48px;
+      height: 48px;
       border: none;
       border-radius: 12px;
-      background: linear-gradient(135deg, #FFB74D 0%, #FF3D00 100%);
-      color: white;
-      font-size: 20px;
-      font-weight: bold;
+      background-color: transparent;       /* fully transparent background */
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
       cursor: pointer;
       user-select: none;
+      padding: 0;                           /* eliminate default padding */
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2); /* optional drop shadow */
     `;
-
+  
+    // Insert an <img> that points to our iconUrl
+    const img = document.createElement('img');
+    img.src = iconUrl;                     // e.g. chrome-extension://〈ID〉/icons/icon48.png
+    img.width = 48;                        // adjust as desired (e.g. 24×24 for some padding)
+    img.height = 48;
+    img.alt = 'Shuffle';
+  
+    // Remove whitespace around the image (ensures pixel‐perfect centering)
+    img.style.display = 'block';
+  
+    button.appendChild(img);
+  
+    // Keep the original click handler logic from override.js:
     button.addEventListener('click', async () => {
       if (playlistData && Array.isArray(playlistData.playlist_clips)) {
         console.log('🔀 Suno Shuffler: button was clicked');
-
-        // Create a new shuffled copy of the data
+  
+        // Shuffle the array copy
         const shuffledData = {
           ...playlistData,
           playlist_clips: shuffleArray([...playlistData.playlist_clips])
         };
-
-        // Store the shuffled data + a timestamp
+  
+        // Store shuffled data + timestamp
         const shuffleId = Date.now().toString();
         sessionStorage.setItem('sunoShuffleId', shuffleId);
         sessionStorage.setItem('sunoShuffledData', JSON.stringify(shuffledData));
-
-        // ALSO set a "play-first-song" flag so that, on reload, we click the first play button.
         sessionStorage.setItem('sunoPlayFirst', 'true');
-
-        // Visual feedback before refresh
-        button.textContent = '✓';
-        button.style.color = '#ffffff';
-
-        // Refresh the page after a short delay (to show the checkmark briefly)
+  
+        // Give quick visual feedback (optional—for example, tint the icon green)
+        img.style.opacity = '0.6';
+  
+        // Reload after a brief delay
         setTimeout(() => {
           window.location.reload();
         }, 300);
       }
     });
-
+  
     return button;
   }
 
