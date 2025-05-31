@@ -33,7 +33,7 @@
   }
 
   // ────────────────────────────────────────────────────────────────────────────────
-  const originalFetch = window.fetch;
+  const originalFetch = window.fetch.bind(window);
   let playlistData = null;
 
   function shuffleArray(arr) {
@@ -147,7 +147,7 @@
     const url = typeof input === 'string' ? input : input.url;
 
     // Only target the playlist endpoint (e.g. /api/playlist/?page=…)
-    if (url.includes('/api/playlist/') && url.includes('?page=')) {
+    if (url.includes('/api/playlist/')) {
       // 1) If we have a stored shuffled JSON, return it immediately (and re-populate playlistData)
       const shuffledDataJson = sessionStorage.getItem('sunoShuffledData');
       const storedShuffleId  = sessionStorage.getItem('sunoShuffleId');
