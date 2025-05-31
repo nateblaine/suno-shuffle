@@ -41,13 +41,17 @@
       
       button.addEventListener('click', async () => {
         if (playlistData && Array.isArray(playlistData.playlist_clips)) {
+          console.log('button was clicked');
+
           // Create a new shuffled copy of the data
           const shuffledData = {
             ...playlistData,
             playlist_clips: shuffleArray([...playlistData.playlist_clips])
           };
           
-          // Store the shuffled data in session storage
+          // Store the shuffled data in session storage with a timestamp
+          const shuffleId = Date.now();
+          sessionStorage.setItem('sunoShuffleId', shuffleId.toString());
           sessionStorage.setItem('sunoShuffledData', JSON.stringify(shuffledData));
           
           // Visual feedback before refresh
@@ -65,25 +69,25 @@
     }
 
     function injectShuffleButton() {
-      // Find the target container - looking for the flex container with gap-2 class
-      const targetContainer = document.querySelector('.flex.flex-row.justify-end.items-center.gap-2');
-      if (!targetContainer) {
-        console.log('🔍 Suno Shuffler: Target container not found, will retry...');
-        setTimeout(injectShuffleButton, 3000); // Retry after 3 seconds
-        return;
-      }
-
-      // Check if button already exists
-      if (document.querySelector('.suno-shuffle-button')) {
-        return;
-      }
-
-      const shuffleButton = createShuffleButton();
-      shuffleButton.classList.add('suno-shuffle-button');
       
-      // Insert the button before the last element in the container
-      targetContainer.insertBefore(shuffleButton, targetContainer.firstChild);
-      console.log('✅ Suno Shuffler: Shuffle button injected');
+      const observer = new MutationObserver(() => {
+        const targetContainer = document.querySelector('.flex.flex-row.justify-end.items-center.gap-2');
+        if (targetContainer) {
+          observer.disconnect();
+          // Check if button already exists
+          if (document.querySelector('.suno-shuffle-button')) {
+            return;
+          }
+
+          const shuffleButton = createShuffleButton();
+          shuffleButton.classList.add('suno-shuffle-button');
+          
+          // Insert the button before the last element in the container
+          targetContainer.insertBefore(shuffleButton, targetContainer.firstChild);
+          console.log('✅ Suno Shuffler: Shuffle button injected');
+        }
+      });
+      observer.observe(document.documentElement, { childList: true, subtree: true });
     }
   
     window.fetch = async function(input, init) {
@@ -93,11 +97,21 @@
       if (url.includes('/api/playlist/') && url.includes('?page=')) {
         // Check for shuffled data in session storage first
         const shuffledDataJson = sessionStorage.getItem('sunoShuffledData');
-        if (shuffledDataJson) {
+        const storedShuffleId = sessionStorage.getItem('sunoShuffleId');
+        
+        if (shuffledDataJson && storedShuffleId) {
           try {
             const shuffledData = JSON.parse(shuffledDataJson);
-            // Clear the stored data after using it
-            sessionStorage.removeItem('sunoShuffledData');
+
+            // Repopulate playlistData so the click handler sees it
+            playlistData = shuffledData;
+
+            // Clear the stored data after using it if it's from a previous shuffle
+            const currentShuffleId = sessionStorage.getItem('sunoShuffleId');
+            if (currentShuffleId === storedShuffleId) {
+              sessionStorage.removeItem('sunoShuffledData');
+              sessionStorage.removeItem('sunoShuffleId');
+            }
             
             // Return the shuffled data without making a new request
             const blob = new Blob([shuffledDataJson], { type: 'application/json' });
