@@ -9,7 +9,8 @@
       "128": "icons/icon128.png"
     },
     "permissions": [
-      "scripting"
+      "scripting",
+      "webNavigation"
     ],
     "host_permissions": [
       "https://suno.com/playlist/*",
@@ -25,9 +26,7 @@
     "content_scripts": [
       {
         "matches": [
-        "https://suno.com/playlist/*", 
-        "https://suno.com/me/playlists", 
-        "https://suno.com/search?*"
+        "https://suno.com/playlist/*" 
         ],
         "js": ["preload.js"],
         "run_at": "document_start"
