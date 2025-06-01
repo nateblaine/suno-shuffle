@@ -1,7 +1,7 @@
 <div align="center">
   <img src="icons/icon128.png" alt="Suno Shuffle Logo" width="128">
   <h1>Suno Shuffle</h1>
-  <p>A lightweight Chrome extension that adds one-click shuffle functionality to Suno.com playlists</p>
+  <p>A lightweight Chrome extension that adds one-click shuffle functionality to suno.com playlist page.</p>
   
   [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
   [![Issues](https://img.shields.io/github/issues/nateblaine/suno-shuffle)](https://github.com/nateblaine/suno-shuffle/issues)
@@ -26,6 +26,7 @@ Suno Shuffle is designed to be as lightweight as possible:
 
 ### 2. Shuffle Button
 ![Shuffle Button](img/sunoShuffleIcon.png)
+
 *The shuffle button appears in the playlist controls*
 
 ### 3. Shuffled Playlist
@@ -53,7 +54,7 @@ Suno Shuffle is designed to be as lightweight as possible:
 
 ## Usage
 
-1. Navigate to any Suno.ai playlist (e.g., `https://suno.com/playlist/...`)
+1. Navigate to any Suno.ai playlist (e.g., [https://suno.com/playlist/8bae835f-4224-4e0d-addb-adc1f5cd43a5](https://suno.com/playlist/8bae835f-4224-4e0d-addb-adc1f5cd43a5))
 2. Click the shuffle button in the playlist controls
 3. The page will refresh with your newly shuffled playlist
 
