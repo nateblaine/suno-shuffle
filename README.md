@@ -18,6 +18,20 @@ Suno Shuffle is designed to be as lightweight as possible:
 
 > **Note**: The page refresh is intentional and necessary to ensure the new track order is properly applied in Suno's player. Will try to make this worker better in a future release!
 
+## Screenshots
+
+### 1. Original Playlist View
+![Original Playlist](img/playlistBefore.png)
+*Your playlist in its original order*
+
+### 2. Shuffle Button
+![Shuffle Button](img/sunoShuffleIcon.png)
+*The shuffle button appears in the playlist controls*
+
+### 3. Shuffled Playlist
+![Shuffled Playlist](img/playlistShuffleAfter.png)
+*After clicking the shuffle button, the playlist is randomized*
+
 ## Features
 
 - 🎵 One-click playlist shuffling

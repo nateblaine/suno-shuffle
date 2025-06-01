@@ -6,11 +6,9 @@
 
   // ─── Prevent double-injection ─────────────────────────────────────────────
   if (window.__sunoShuffleInjected) {
-    console.log('Already injected, bailing out');
     return;
   }
   window.__sunoShuffleInjected = true;
-  console.log('🔀 Suno Shuffler: override.js loaded');
   // ────────────────────────────────────────────────────────────────────────────────
   const originalFetch = window.fetch.bind(window);
   let playlistData = null;
@@ -49,7 +47,7 @@
             })
           });
         } catch (e) {
-          console.error('🔀 Suno Shuffler: Error parsing shuffled data:', e);
+          // Error parsing shuffled data
         }
       }
 
@@ -66,7 +64,7 @@
       if (Array.isArray(data.playlist_clips)) {
         // Store the original playlist data so our shuffle button can use it
         playlistData = data;
-        console.log('🔍 Suno Shuffler: Playlist data loaded');
+        // Playlist data loaded
 
         // Inject the shuffle button if it hasn’t been added yet
         if (!document.querySelector('.suno-shuffle-button')) {
@@ -91,7 +89,7 @@
       // Attempt to locate the first song-row play button
       const firstPlayBtn = document.querySelector('[data-testid="song-row-play-button"]');
       if (firstPlayBtn) {
-        console.log('🔀 Suno Shuffler: Auto-clicking first song play button');
+        // Auto-clicking first song play button
         firstPlayBtn.click();
         // Clear the flag so we don't keep auto-playing on subsequent navigations
         sessionStorage.removeItem('sunoPlayFirst');
@@ -161,11 +159,10 @@
   
     // Keep the original click handler logic from override.js:
     button.addEventListener('click', async () => {
-      console.log('🔀 Suno Shuffler: button was clicked - OUTER');
-      console.log('Playlist data:', playlistData);
+      // Button was clicked
 
       if (playlistData && Array.isArray(playlistData.playlist_clips)) {
-        console.log('🔀 Suno Shuffler: button was clicked');
+        // Button was clicked
   
         // Shuffle the array copy
         const shuffledData = {
@@ -208,7 +205,7 @@
 
         // Insert the button as the first child of that container
         targetContainer.insertBefore(shuffleButton, targetContainer.firstChild);
-        console.log('✅ Suno Shuffler: Shuffle button injected');
+        // Shuffle button injected
       }
     });
 
