@@ -190,6 +190,10 @@
   }
 
   function injectShuffleButton() {
+    // Only insert our button on the playlist page
+    if (!window.location.pathname.startsWith('/playlist/')) {
+      return;
+    }
     const observer = new MutationObserver(() => {
       const targetContainer = document.querySelector('.flex.flex-row.justify-end.items-center.gap-2');
       if (targetContainer) {
